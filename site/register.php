@@ -18,17 +18,17 @@ if(isset($_POST["Email"])){
                     //Check si les mots de passes correspondent entre eux
                     if($_POST["Password"] != $_POST["Password_Verify"]) return array_push($errors, "Les mots de passes ne correspondent pas");
                     $Password = htmlspecialchars($_POST["Password"]);
-                    $Name = htmlspecialchars($_POST["Nom"]);
-                    $Username = htmlspecialchars($_POST["Prenom"]); 
+                    $Nom = htmlspecialchars($_POST["Nom"]);
+                    $Prenom = htmlspecialchars($_POST["Prenom"]); 
                     $Email = htmlspecialchars($_POST["Email"]);
-                    if(strlen($Username) > 30) return array_push($errors, "Votre nom ne doit pas avoir plus de 30 caractères");
+                    if(strlen($Prenom) > 30) return array_push($errors, "Votre nom ne doit pas avoir plus de 30 caractères");
                     
                     //Mot de passe et email encrytés
                     $Password = password_hash($Password, PASSWORD_BCRYPT);
                     $Email = md5($Email);
 
-                    $stmt = $bdd->prepare("INSERT INTO `users` (`Username`,`Name`,`Email`,`Password`) VALUES (?,?,?,?)");
-                    $stmt->execute([$Username,$Name,$Email,$Password]);
+                    $stmt = $bdd->prepare("INSERT INTO `newclient` (`Prenom`,`Nom`,`Email`,`Password`) VALUES (?,?,?,?)");
+                    $stmt->execute([$Prenom,$Nom,$Email,$Password]);
                     echo "Inscrit";
                 }else{
                     //Error: Les mots de passe n'est pas défini
@@ -62,27 +62,6 @@ if(isset($_POST["Email"])){
     <title>Inscription</title>
 </head>
 <body>
-    <center><a href="https://www.paypal.com/pools/c/8nK3yupQi0">Faites un don pour nous soutenir</a> </br></br>
 
-<center><embed src=Criquet.pdf  width=800 height=550 type='application/pdf'/></center>
-<center>Manon SAYAG a publié le 28 février 2020</center>
-    <form action="/register" method="post">
-        <h1>Inscription</h1>
-        <input type="text" name="Email" placeholder="Email">
-        <input type="text" name="Pseudo" placeholder="Pseudo">
-        <input type="password" name="Password" placeholder="Mot de passe">
-        <input type="password" name="Password_Verify" placeholder="Valider le mot de passe">
-        <input type="submit" value="S'inscrire">
-        <?php 
-            if(!isset($errors)) return;
-            if(count($errors) > 0){
-                for ($i=0; $i < count($errors); $i++) { 
-                    ?>
-                        <li><?= $errors[$i] ?></li>
-                    <?php
-                }
-            }
-        ?>
-    </form>
 </body>
 </html>
